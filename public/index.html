@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <title>Title Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Socket.IO CSS -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- JQueryCSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        body{
+            background-image:url("img/whatsapp.jpg")
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container" >
+        <h1 class="text-center" color="white">
+            Whatsapp
+        </h1>
+        <form class="well">
+            <textarea name="taMsg" id="taMsg" cols="30" rows="10"></textarea>
+            <input type="text" class="form-control" id="txtMsg">
+            <button class="btn btn-success" id="btnSend">Send</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            //const socket = io.connect("http://localhost:3030");
+            const socket = io.connect("/");
+let chatterName;
+
+
+            socket.on("acknowledge", (data) => {
+                console.log(data.message);
+                //$("#taMsg").val(data.message);
+                chatterName=prompt("Please enter name : ");
+            })
+            socket.on("MsgToClient",(userName,msg)=>{
+                $("#taMsg").append(userName+" : "+ msg+"\n");
+            })
+            $("#btnSend").on("click", (event) => {
+                event.preventDefault()
+                let message = $("#txtMsg").val()
+                //$("#taMsg").val("Client Says:" + message);
+                socket.emit("MsgToServer",chatterName, message);
+                $("#txtMsg").val('')
+            })
+        })
+    </script>
+</body>
+</html>
