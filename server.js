@@ -10,7 +10,7 @@ const server = http.createServer(app)
 const io = require("socket.io")(server)
 
 //3030 may not be available on any other server, hence if 3030 is not availabe default port will be taken
-const port = process.env.port || 3030;
+const port = process.env.PORT || 3030;
 
 //Static folder to keep all static files
 app.use(express.static(__dirname + "/public"))
